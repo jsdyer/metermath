@@ -1,33 +1,6 @@
-<!doctype html>
-<html lang="en-CA">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="{{DESCRIPTION}}">
-  <title>{{TITLE}} · CoolCode</title>
-  <link rel="stylesheet" href="./style.css">
-  <script type="module" src="./app.mjs"></script>
-</head>
-<body data-tool-id="{{TOOL_ID}}">
-  <a class="skip" href="#main">Skip to content</a>
-  <header><a href="https://coolcode.ca/">← CoolCode.ca</a><a href="{{SOURCE_URL}}">Source &amp; instructions ↗</a></header>
-  <main id="main">
-    <p class="eyebrow">Browser tool starter</p>
-    <h1>{{TITLE}}</h1>
-    <p class="intro">{{DESCRIPTION}}</p>
-    <section aria-labelledby="example-title">
-      <h2 id="example-title">Clean a list</h2>
-      <p>Trim spaces, skip blank lines and remove exact duplicates. Capitalization stays distinct.</p>
-      <div class="panels">
-        <div><label for="input">Your lines</label><textarea id="input" rows="10" maxlength="100000" spellcheck="false" placeholder="Paste one item per line"></textarea></div>
-        <div><label for="output">Cleaned lines</label><textarea id="output" rows="10" readonly spellcheck="false"></textarea></div>
-      </div>
-      <div class="actions"><button id="sample" type="button">Load example</button><button id="clear" type="button">Clear</button><button id="copy" type="button" hidden>Copy result</button></div>
-      <p id="status" role="status" aria-live="polite">Paste a list to begin.</p>
-      <noscript><p>This tool needs JavaScript to process your text. The source is available above.</p></noscript>
-    </section>
-    <aside aria-label="Privacy"><strong>Stays on your device.</strong> This example makes no API requests and does not save your text. Reloading clears it.</aside>
-  </main>
-  <footer>Part of <a href="https://coolcode.ca/">the CoolCode collection</a>.</footer>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="{{DESCRIPTION}}"><title>{{TITLE}} · CoolCode</title><link rel="stylesheet" href="./style.css"></head><body data-tool="{{TOOL_ID}}">
+<a href="#main" class="skip">Skip to calculator</a><nav><a href="https://coolcode.ca/">← CoolCode</a><span>Vancouver / On-street parking</span></nav>
+<header><div><p class="eyebrow">Vancouver, British Columbia</p><h1>Meter Math</h1><p class="dek">Compare what nearby parking meters charge for your entire visit.</p></div><div class="stamp" aria-hidden="true">P</div></header>
+<main id="main"><aside><h2>Your visit</h2><form id="visit"><label for="place">Destination</label><select id="place"></select><div id="custom" hidden><label for="coords">Latitude, longitude</label><input id="coords" type="text" placeholder="49.28296, -123.11985" value="49.28296, -123.11985"></div><label for="vehicle">Vehicle</label><select id="vehicle"><option value="Any Vehicle">Standard passenger vehicle</option><option value="Accessibility">Vehicle with accessibility permit</option><option value="Electric Vehicle">Electric passenger vehicle</option><option value="Motorcycle">Gas motorcycle · PayByPhone</option></select><label for="date">Arrival date in Vancouver</label><input type="date" id="date" required value="2026-11-20"><div class="pair"><div><label for="start">Arrive</label><input type="time" id="start" required value="17:30"></div><div><label for="end">Leave</label><input type="time" id="end" required value="19:00"></div></div><p class="hint">An earlier departure time means the following day.</p><label for="radius">Search distance</label><select id="radius"><option value="250">250 metres</option><option value="500" selected>500 metres</option><option value="1000">1 kilometre</option><option value="2000">2 kilometres</option></select><button type="submit">Compare this visit</button></form><p id="error" role="alert"></p></aside>
+<section aria-label="Visit estimates"><div id="summary" role="status">Reading city meters…</div><div id="compare"></div><h2>Nearby meter zones</h2><p class="hint">Distances run in a straight line to mapped meter points. Street crossings and walking routes can add distance. The city publishes block-level information.</p><div class="tools"><div><label for="status">Show</label><select id="status"><option value="priced">Priced visits</option><option value="conditional">Check the signs</option><option value="excluded">Ruled out</option><option value="all">All results</option></select></div><div><label for="sort">Sort by</label><select id="sort"><option value="distance">Nearest first</option><option value="cost">Lowest meter charge</option></select></div></div><div id="results"></div><button type="button" id="more" hidden>Show more zones</button></section></main>
+<footer><h2>Source &amp; assumptions</h2><p id="dates"></p><p>Rates are in Canadian dollars. Prices prorate the hourly meter charge between 9 a.m. and 10 p.m. App fees, payment increments, live vacancies, temporary signs and event calendars are outside this snapshot. Current signs and meter displays govern the visit.</p><p>Nearby stadium results flag a 650 m screening radius for potential event conditions. This radius is approximate. The city determines event locations and times. A gas motorcycle paying through PayByPhone receives the city’s half-rate in regular spaces.</p><p><a href="https://opendata.vancouver.ca/explore/dataset/parking-meters/">City meter records</a> · <a href="https://vancouver.ca/streets-transportation/metered-parking.aspx">Parking and event guidance</a> · <a href="https://vancouver.ca/streets-transportation/motorcycles-and-scooters.aspx">Motorcycle rates</a> · <a href="https://bylaws.vancouver.ca/2952c.pdf">Parking Meter By-law</a></p><p>Contains information licensed under the <a href="https://opendata.vancouver.ca/pages/licence/">Open Government Licence – Vancouver</a>. <a href="{{SOURCE_URL}}">Source code</a></p></footer><script type="module" src="./app.mjs"></script></body></html>

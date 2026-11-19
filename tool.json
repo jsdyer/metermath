@@ -1,16 +1,45 @@
 {
-  "id": "coolcode-tool-template",
-  "title": "CoolCode Tool Starter",
-  "description": "A browser-only example that trims lines and removes exact duplicates.",
-  "category": "security",
-  "tags": ["text", "lines", "duplicates"],
-  "icon": "scan-search",
-  "url": "/coolcode-tool-template/",
-  "source": "https://github.com/jsdyer/coolcode-tool-template",
+  "id": "metermath",
+  "title": "Meter Math",
+  "description": "Compare entire-visit parking costs and posted restrictions at Vancouver meter zones.",
+  "category": "money",
+  "tags": [
+    "parking",
+    "Vancouver",
+    "meters",
+    "rates",
+    "transportation"
+  ],
+  "icon": "receipt-text",
+  "url": "/metermath/",
+  "source": "https://github.com/jsdyer/metermath",
   "hosting": "project",
   "access": "browser",
   "data_info": {
-    "mode": "local",
-    "detail": "The browser reads the text you paste and compares its lines."
+    "mode": "snapshot",
+    "detail": "City of Vancouver meter records supply time-of-day rates, duration limits and restrictions.",
+    "cadence": "Daily",
+    "probes": [
+      {
+        "label": "Data retrieved",
+        "url": "https://coolcode.ca/metermath/status.json",
+        "path": [
+          "retrieved"
+        ],
+        "count_at": {
+          "path": [
+            "count"
+          ],
+          "unit": "in-service meter records"
+        }
+      },
+      {
+        "label": "Meter source update",
+        "url": "https://coolcode.ca/metermath/status.json",
+        "path": [
+          "latest"
+        ]
+      }
+    ]
   }
 }

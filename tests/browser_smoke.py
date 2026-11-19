@@ -1,4 +1,4 @@
-"""Exercise the built starter at a project subpath in Chromium."""
+"""Exercise the built application at a project subpath in Chromium."""
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -29,22 +29,28 @@ def main():
                 errors = []
                 page.on("pageerror", lambda error: errors.append(str(error)))
                 page.goto(f"http://127.0.0.1:{server.server_port}/example-tool/")
-                page.locator("#sample").click()
-                assert page.locator("#output").input_value() == "Halifax\nLangley\nVancouver"
-                assert "1 duplicate removed" in page.locator("#status").inner_text()
-                page.locator("#input").fill('<img src=x onerror="alert(1)">\n<img src=x onerror="alert(1)">')
-                assert page.locator("#output").input_value() == '<img src=x onerror="alert(1)">'
-                assert page.locator("img").count() == 0
-                page.locator("#clear").click()
-                assert page.locator("#output").input_value() == ""
-                page.locator("#sample").click()
+                page.get_by_text('$4.25 difference for this visit').wait_for()
+                assert '$7.25' in page.locator('#compare').inner_text()
+                page.locator('#results summary').first.click()
+                assert page.locator('#results details[open] a').is_visible()
+                page.locator('#start').fill('09:00')
+                page.locator('#end').fill('15:30')
+                page.get_by_role('button',name='Compare this visit').click()
+                page.locator('#status').select_option('excluded')
+                assert 'Ruled out' in page.locator('#results').inner_text()
+                page.locator('#place').select_option('custom')
+                page.locator('#coords').fill('90, 0')
+                page.get_by_role('button',name='Compare this visit').click()
+                assert 'No matching' in page.locator('#results').inner_text()
+                page.reload()
+                page.get_by_text('$4.25 difference for this visit').wait_for()
                 page.screenshot(path=str(screenshots / "desktop.png"), full_page=True)
                 page.set_viewport_size({"width": 390, "height": 844})
                 assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
                 page.screenshot(path=str(screenshots / "mobile.png"), full_page=True)
                 assert not errors, errors
                 browser.close()
-            print("Browser checks passed: project subpath, sample, clear, safe text and mobile layout")
+            print("Browser checks passed")
         finally:
             server.shutdown()
 

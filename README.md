@@ -1,115 +1,23 @@
-# CoolCode browser tool template
+# Meter Math
 
-A starting point for independent tools at `coolcode.ca/<repo>/`: a working local-text
-example, responsive UI, Python standard-library build, Node tests, PR checks and Pages
-publication. No npm install is needed.
-
-## Using the example
+[Open Meter Math](https://coolcode.ca/metermath/) to compare Vancouver's posted hourly meter rates and limits for a whole visit. Select a landmark or enter latitude and longitude. Choose a vehicle, date, arrival, departure and search distance. Compare the estimates, then expand any result for its two rate periods and original city record.
 
 <!-- coolcode:guide -->
-The first occurrence of each trimmed line keeps its place. Compare the output with the original text before copying the result.
+Try a Friday from 5:30 to 7 p.m. near the Vancouver Art Gallery. Compare the two featured zones, then expand a meter row to see the charge on either side of 6 p.m. Switch the result group to see which posted limits or restrictions affect the same visit.
 <!-- /coolcode:guide -->
 
-For a real tool, replace this paragraph with one or two plain-text sentences
-about an example, a limit or how to interpret the results. Keep the source,
-coverage, refresh behaviour and a worked example in this README as appropriate.
-When updating a tool, revise any details its behaviour has changed and keep the
-homepage's shorter data-source sentence in `tool.json` accurate.
-The hub imports the marked note into the catalogue README.
+## Interpreting estimates
 
-## One-time template setup
+Zone 60223 charges $6.50 per hour before 6 p.m. and $4 afterward in the launch snapshot. Half an hour plus one hour costs $7.25. Zone 67682 charges $2 per hour in both periods, or $3 for the same 90 minutes. The difference is $4.25. These examples change when the City changes its rates.
 
-Enable **Settings → General → Template repository** here. This repository does not
-need Pages enabled: its workflow builds/tests but intentionally skips deployment.
-New copies also skip deployment until `scripts/init.py` sets the tool ID to match
-their repository name. This lets you create the repo before configuring Pages.
+Distances run directly from the selected coordinates to record points. Vancouver reports rates at block level. A walking route, exact stall location and live availability require additional information. The regular estimates use the city's daily 9 a.m.–10 p.m. metered period, including holidays. Overnight visits can cross midnight. Charges are prorated and rounded once per visit. Payment increments, transaction fees and temporary signs can change a payment. The calculator uses local civil clock times and cannot resolve ambiguous clock-change hours.
 
-## Start a new tool
+The site compares regular spaces and applicable dedicated vehicle spaces. Gas motorcycles paying through PayByPhone receive the half-rate for regular spaces. Dedicated motorcycle spaces require confirmation of the app price. Other motorcycle payment modes and zero-emission motorcycle discounts are outside this calculator. Vehicles with a valid accessibility permit may use either regular or designated accessible spaces.
 
-1. Select **Use this template → Create a new repository**, choose owner `jsdyer`,
-   a unique lowercase name such as `my-tool`, and public visibility.
-2. Clone the new repository. Use Python 3.12+ and Node 24+.
-3. Set the identity, using a slug that matches the repository name:
+Weekday and weekend duration limits are evaluated separately. A stay that exceeds the recorded limit in a single band is ruled out. A continuous visit spanning different limits goes to sign review when it exceeds only the shorter limit. Effective timed prohibitions, including overnight restrictions carried in from the prior day, rule out a visit. Incomplete rules, time-limit and prohibition overrides, a matching rush-hour time, and optional flat rates require sign review. Flat-rate terms are absent from the export. A 650 m radius around the stadium centres flags possible event rates or stopping controls. The radius is a screening area and the actual signed event area can differ. Results never infer event dates. Source rows with identical rules and payment-zone numbers are represented by their nearest point.
 
-```sh
-python3 scripts/init.py my-tool --title "My Tool" --description "Describe what this tool does."
-```
+## Data and development
 
-Review the category, tags and icon in `tool.json`. `access: "browser"` tells the main
-catalogue that the tool works immediately without installation. `--owner` supports a different
-GitHub owner, but only projects owned by `jsdyer` inherit the CoolCode domain.
+Contains information licensed under the [Open Government Licence – Vancouver](https://opendata.vancouver.ca/pages/licence/). The [parking-meter export](https://opendata.vancouver.ca/explore/dataset/parking-meters/) supplies coordinates, rates, limits, vehicle designations and restrictions. The City publishes [meter and event guidance](https://vancouver.ca/streets-transportation/metered-parking.aspx), [metered hours](https://vancouver.ca/streets-transportation/driving.aspx), [motorcycle rates](https://vancouver.ca/streets-transportation/motorcycles-and-scooters.aspx) and [Parking Meter By-law 2952](https://bylaws.vancouver.ca/2952c.pdf). Seven landmark coordinates use the City's [public washroom points](https://opendata.vancouver.ca/explore/dataset/public-washrooms/). The two arena centres are approximate.
 
-4. Replace the example in `web/` and its tests. Update the privacy explanation,
-   source attribution and README to describe the real tool.
-5. Test and preview:
-
-```sh
-node --test tests/*.test.mjs
-python3 -m unittest discover -s tests -v
-python3 scripts/build.py
-python3 -m http.server 8000 --directory dist
-```
-
-Open `http://localhost:8000/`. The example trims lines, skips blanks and removes exact
-duplicates, preserving first-seen order and capitalization. It makes no API requests
-and does not persist text. Update that explanation if your app behaves differently.
-
-CI also tests the browser flow and mobile layout at a project subpath. Replace the
-sample assertions in `tests/browser_smoke.py` when implementing your own UI. To run
-that check locally (optional for ordinary preview):
-
-```sh
-python3 -m venv .venv
-. .venv/bin/activate
-python3 -m pip install -r tests/browser-requirements.txt
-python3 -m playwright install --with-deps chromium
-python3 tests/browser_smoke.py
-```
-
-Playwright is a test-only dependency; the app and its static build do not use it.
-
-## Publish and register
-
-When the actual tool is ready, in the **new tool repository** set **Settings → Pages → Build and deployment →
-Source → GitHub Actions**. Push to `main`, or manually run **Browser tool · Check and
-publish** after enabling Pages. If the initial deployment ran before Pages was enabled,
-enable it and rerun. PRs only check/build and provide a downloadable preview artifact.
-
-Keep asset paths and module imports relative. Check `https://coolcode.ca/my-tool/`.
-Do not add a CNAME or set `coolcode.ca` as this project's custom domain; the account
-site supplies it. Only successful `main` builds deploy.
-
-After verifying the app, copy the reviewed object from `tool.json` into `data/tools.json`
-in [the main site](https://github.com/jsdyer/jsdyer.github.io). Each tool still builds
-independently. Update the hub record when listing metadata changes; the hub is the
-authority for discovery. Ordinary app updates touch only this repository.
-
-The main site separates **Use in your browser** from **Install yourself**. An app
-that asks for a file is still a browser tool. Standalone Linux packages should start
-in their own repositories with their own build/release workflow, rather than copying
-this browser-only scaffold. Their hub record uses `access: "install"`, links to an
-installation guide, and includes `requirements`.
-
-## Files
-
-| Path | Purpose |
-| --- | --- |
-| `tool.json` | Page metadata and a ready-to-copy catalogue record |
-| `web/` | HTML, responsive CSS, DOM interactions and separate model logic |
-| `scripts/build.py` | Escape metadata and build `web/` into `dist/` |
-| `scripts/init.py` | Set a new project's identity |
-| `tests/` | Application and builder tests |
-| `.github/workflows/pages.yml` | Check PRs and publish successful main builds |
-| `AGENTS.md` | Instructions for future coding work |
-
-Namespace optional storage as `coolcode:<tool-id>:<key>`; CoolCode paths share a
-browser origin. Don't save pasted text/uploads by default. Document external APIs
-and send only the information needed for the selected action. Never embed secrets.
-
-Scheduled refresh is opt-in. Validate source data before deploying, display its date,
-and preserve the last good deployment on failure. Public-repository schedules can
-stop after 60 days without repository activity.
-
-Templates don't propagate future edits automatically. Adopt fixes explicitly and
-consider a versioned reusable workflow once several tools confirm the shared process.
-Choose and add the intended software license before distributing a new project.
+The daily import checks the row count against catalogue metadata and retains in-service, mappable entries with a payment zone. It records the City's modification date and the retrieval date separately. Coordinates and visit inputs stay in browser memory. The site builds offline from the committed snapshot. Run `python3 scripts/refresh.py`, `node --test tests/*.test.mjs`, `python3 -m unittest discover -s tests`, and `python3 scripts/build.py`. Run `python3 tests/browser_smoke.py` with Chromium and the test dependencies installed.
