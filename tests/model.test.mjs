@@ -2,8 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {evaluate,selectMeters,places} from '../web/model.mjs';
-const file=JSON.parse(fs.readFileSync(new URL('../web/data.json',import.meta.url)));
-const rows=file.rows.map(a=>Object.fromEntries(file.fields.map((k,i)=>[k,a[i]])));
+const rows=JSON.parse(fs.readFileSync(new URL('./gallery-2026-11-16.json',import.meta.url)));
 const visit={dow:5,start:1050,end:1140,vehicle:'Any Vehicle',lat:places[0][1],lon:places[0][2],radius:500};
 const r=rows.find(r=>r.mobile_payment_number===60223);
 test('Gallery visit splits at 6 p.m.',()=>{
