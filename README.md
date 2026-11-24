@@ -21,3 +21,11 @@ Weekday and weekend duration limits are evaluated separately. A stay that exceed
 Contains information licensed under the [Open Government Licence – Vancouver](https://opendata.vancouver.ca/pages/licence/). The [parking-meter export](https://opendata.vancouver.ca/explore/dataset/parking-meters/) supplies coordinates, rates, limits, vehicle designations and restrictions. The City publishes [meter and event guidance](https://vancouver.ca/streets-transportation/metered-parking.aspx), [metered hours](https://vancouver.ca/streets-transportation/driving.aspx), [motorcycle rates](https://vancouver.ca/streets-transportation/motorcycles-and-scooters.aspx) and [Parking Meter By-law 2952](https://bylaws.vancouver.ca/2952c.pdf). Seven landmark coordinates use the City's [public washroom points](https://opendata.vancouver.ca/explore/dataset/public-washrooms/). The two arena centres are approximate.
 
 The daily import checks the row count against catalogue metadata and retains in-service, mappable entries with a payment zone. It records the City's modification date and the retrieval date separately. Coordinates and visit inputs stay in browser memory. The site builds offline from the committed snapshot. Run `python3 scripts/refresh.py`, `node --test tests/*.test.mjs`, `python3 -m unittest discover -s tests`, and `python3 scripts/build.py`. Run `python3 tests/browser_smoke.py` with Chromium and the test dependencies installed.
+
+<!-- schedule-reliability -->
+## Schedule reliability
+
+Public GitHub repositories can have scheduled workflows disabled after 60 days of inactivity. A separate weekly [schedule guard](.github/workflows/schedule-guard.yml) calls GitHub's enable-workflow API for an explicit list of refresh workflows and itself. It can restore workflows disabled for inactivity, preserves manually disabled workflows, and runs independently of collection failures.
+
+This is an interim mitigation, not a scheduling guarantee: GitHub does not document active-workflow renewal as a permanent exemption, and scheduled runs can be delayed or dropped. A scheduler on our own Linux server is the planned independent trigger. The guard does not collect data, create dummy commits, or change source/check timestamps; successful collection and published data freshness still need monitoring.
+<!-- /schedule-reliability -->
